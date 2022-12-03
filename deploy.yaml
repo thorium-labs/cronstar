@@ -1,0 +1,39 @@
+---
+version: '2.0'
+services:
+  cron-superstar:
+    image: 'j0nl1/superstar:1'
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - global: true
+    env:
+          - CONTRACT_ADDR=
+          - BECH32_PREFIX=
+          - GAS_PRICE=
+          - MNEMONIC=
+          - NOIS_FEE=
+          - RPC_URL=
+          - DENOM=
+profiles:
+  compute:
+    cron-superstar:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 128Mi
+        storage:
+          - size: 256Mi
+  placement:
+    dcloud:
+      pricing:
+        cron-superstar:
+          denom: uakt
+          amount: 1000
+deployment:
+  cron-superstar:
+    dcloud:
+      profile: cron-superstar
+      count: 1
